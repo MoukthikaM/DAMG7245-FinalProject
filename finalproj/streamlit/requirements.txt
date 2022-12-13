@@ -1,0 +1,7 @@
+click<=8.0.4
+scikit-learn==1.0.2
+sklearn
+streamlit==1.14.0
+requests==2.28.1
+snowflake==0.0.3
+plotly==5.9.0
