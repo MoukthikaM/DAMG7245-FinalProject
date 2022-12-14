@@ -1,0 +1,23 @@
+name: Building and Deploying streamlit and fastapi
+
+# Controls when the workflow will run
+on:
+  push:
+  workflow_dispatch:
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9"]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Printing the contents of the project
+        run: |
+             pwd
+             ls finalproj/fastapi
+             ls finalproj/streamlit
+             
