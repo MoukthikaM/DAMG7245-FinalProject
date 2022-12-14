@@ -36,5 +36,5 @@ jobs:
             #Now we have got the access of EC2 and we will start the deploy .
             cd ~/finalproj &&
             
-            docker-compose -f docker-compose.yml up -d --build 
+            vi docker-compose -f docker-compose.yml up -d --build 
           '
