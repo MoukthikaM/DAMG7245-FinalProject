@@ -6,3 +6,4 @@ requests==2.28.1
 snowflake==0.0.3
 plotly==5.9.0
 ipython
+nbformat>=4.2.0
