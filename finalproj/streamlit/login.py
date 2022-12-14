@@ -2,7 +2,7 @@ import streamlit as st
 import json
 import requests
 st.set_page_config(
-      page_title="SEVIR App",
+      page_title="Housing Prices App",
       page_icon="👋",
 )
 
@@ -102,7 +102,7 @@ def show_login_page():
 
 
 with headerSection:
-    st.title("SEVIR Cloud Application")
+    st.title("Housing Prices Cloud Application")
     #first run will have nothing in session_state
     if 'loggedIn' not in st.session_state:
         st.session_state['loggedIn'] = False
