@@ -102,7 +102,7 @@ def show_login_page():
 
 
 with headerSection:
-    st.title("Housing Prices in Melbourne Cloud Application")
+    st.title("Housing Prices Cloud Application")
     #first run will have nothing in session_state
     if 'loggedIn' not in st.session_state:
         st.session_state['loggedIn'] = False
