@@ -31,4 +31,4 @@ jobs:
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           #ssh-keyscan -H ${SSH_HOST} >> /home/ec2-user/.ssh/known_hosts
-          scp finalproj -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i private_key ${USER_NAME}@${HOSTNAME}:~/
+          scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i private_key -r finalproj ${USER_NAME}@${HOSTNAME}:~/
