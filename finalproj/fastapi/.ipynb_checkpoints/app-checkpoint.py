@@ -16,12 +16,11 @@ app = FastAPI()
 
 class SqlQuery(BaseModel):
     suburb: str
-    asl: tuple
-    toa: tuple
-    lom: tuple
-    tow: tuple
-    car: tuple
-    ba: tuple
+    beds: tuple
+    baths: tuple
+    rooms: tuple
+  
+
 
     
     
@@ -39,24 +38,29 @@ async def model(query: SqlQuery,credentials: HTTPAuthorizationCredentials = Secu
     customer_df = session.table('HOUSING.PUBLIC.HOUSINGPRICE_PREDICTED')
     print(query)
     suburb=query.suburb
-    lom=query.lom
-    asl=query.asl
-    toa=query.toa
-    tow=query.tow
-    ba=query.ba
-    car=query.car
+    beds=query.beds
+    baths=query.baths
+    rooms=query.rooms
+
+
     minspend, maxspend = customer_df.filter(
          (col("SUBURB") == suburb) &
-          ( col("ROOMS") <= asl[1]) & (  col("ROOMS") > asl[0])
-        # & (col("LANDSIZE") <= toa[1]) & (col("LANDSIZE") > toa[0])
-        & (col("BEDROOM2") <= tow[1]) & (col("BEDROOM2") > tow[0])
-        & (col("BATHROOM") <= lom[1]) & (col("BATHROOM") > lom[0])
-        & (col("CAR") <= car[1]) & (col("CAR") > car[0])
-        & (col("BUILDINGAREA") <= ba[1]) & (col("BUILDINGAREA") > ba[0])
+          ( col("ROOMS") <= rooms[1]) & (  col("ROOMS") > rooms[0])
+        & (col("BEDROOM2") <= beds[1]) & (col("BEDROOM2") > beds[0])
+        & (col("BATHROOM") <= baths[1]) & (col("BATHROOM") > baths[0])
     ).select(trunc(min(col('PREDICTED_PRICE'))), trunc(max(col('PREDICTED_PRICE')))).toPandas().iloc[0, ]
     
     print(minspend,maxspend)
-    return {"minspend":minspend,"maxspend":maxspend,"flag":True}
+    print(type(minspend))
+    if str(minspend)=='nan' or str(maxspend)=='nan':
+        print(minspend)
+        print(maxspend)
+        minspend=0
+        maxspend=0
+        return {"minspend":minspend,"maxspend":maxspend,"flag":True}
+    else:
+       print("Not NAN")
+       return {"minspend":minspend,"maxspend":maxspend,"flag":True}
   elif flag==False:
         print(claims['username'])
         uuid=claims['username']

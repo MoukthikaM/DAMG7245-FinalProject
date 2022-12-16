@@ -3,7 +3,7 @@ version: '3'
 services:
   fastapi:
     
-    image: moukthika/fastapi:v1
+    build: fastapi/
     ports: 
       - 8000:8000
     networks:
@@ -11,7 +11,7 @@ services:
     container_name: fastapi
 
   streamlit:
-    image: moukthika/streamlit:v1
+    build: streamlit/
     depends_on:
       - fastapi
     ports: 
