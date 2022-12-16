@@ -37,55 +37,44 @@ def model_clicked():
     customer_df = session.table('HOUSING.PUBLIC.HOUSINGPRICE_PREDICTED')
 
 # Read Data
-    minasl, maxasl, mintoa, maxtoa, mintow, maxtow, minlom, maxlom,mincar,maxcar,minba,maxba = customer_df.select(
+    minroom, maxroom, minbed, maxbed, minbath, maxbath = customer_df.select(
     floor(min(col("ROOMS"))),
     ceil(max(col("ROOMS"))),
-    floor(min(col("DISTANCE"))),
-    ceil(max(col("DISTANCE"))),
     floor(min(col("BEDROOM2"))),
     ceil(max(col("BEDROOM2"))),
     floor(min(col("BATHROOM"))),
-    ceil(max(col("BATHROOM"))),
-    floor(min(col("CAR"))),
-    ceil(max(col("CAR"))),
-    floor(min(col("BUILDINGAREA"))),
-    ceil(max(col("BUILDINGAREA")))
+    ceil(max(col("BATHROOM")))
 ).toPandas().iloc[0, ]
 
     regions=customer_df.select((col('REGIONNAME'))).toPandas()
 # print(suburbs['SUBURB'].unique())
-    minasl = int(minasl)
-    maxasl = int(maxasl)
-    mintoa = int(mintoa)
-    maxtoa = int(maxtoa)
-    mintow = int(mintow)
-    maxtow = int(maxtow)
-    minlom = int(minlom)
-    maxlom = int(maxlom)
+    minroom = int(minroom)
+    maxroom = int(maxroom)
+    minbed = int(minbed)
+    maxbed = int(maxbed)
+    minbath = int(minbath)
+    maxbath = int(maxbath)
+
     
     
 # Column 1
     with col1:
         st.markdown("#### Search Criteria")
         st.markdown('##')
-        asl = st.slider("ROOMS", minasl, maxasl, (minasl, minasl+5), 1)
-    #st.write("Session Length ", asl)
-        toa = st.slider("LANDSIZE", mintoa, maxtoa, (mintoa, mintoa+5), 1)
-    #st.write("Time on App ", toa)
-        tow = st.slider("BEDROOM", mintow, maxtow, (mintow, mintow+5), 1)
-    #st.write("Time on Website ", tow)
-        lom = st.slider("BATH", minlom,
-                    maxlom, (minlom, minlom+1), 1)
-        car = st.slider("CAR", mincar,
-                    maxcar, (mincar, mincar+4), 1.0)
-        ba = st.slider("BUILDINGAREA", minba,
-                    maxba, (minba, minba+500), 1.0)
-    # suburb = st.selectbox('SUBURB',(suburbs['SUBURB'].unique()))
-    # regions=customer_df.filter(col('SUBURB')==suburb).select((col('REGIONNAME'))).toPandas()
         region = st.selectbox('REGIONNAME',(regions['REGIONNAME'].unique()))
         suburbs=customer_df.filter(col('REGIONNAME')==region).select((col('SUBURB'))).toPandas()    
         suburb = st.selectbox('SUBURB',(suburbs['SUBURB'].unique()))
         print(suburb)
+        rooms = st.slider("ROOMS", minroom, maxroom, (minroom, minroom+5), 1)
+
+        beds = st.slider("BEDROOM", minbed, maxbed, (minbed, minbed+5), 1)
+
+        baths = st.slider("BATH", minbath,
+                    maxbath, (minbath, minbath+1), 1)
+
+    # suburb = st.selectbox('SUBURB',(suburbs['SUBURB'].unique()))
+    # regions=customer_df.filter(col('SUBURB')==suburb).select((col('REGIONNAME'))).toPandas()
+        
     #st.write("Length of Membership ", lom)
 
 # Column 2 (3)
@@ -100,12 +89,9 @@ def model_clicked():
 
         payload = json.dumps({
   "suburb": suburb,
-  "asl": asl,
-  "toa" : toa,
-  "tow": tow,
-  "lom": lom,
-   "car": car,
-    "ba": ba
+  "beds": beds,
+  "baths": baths,
+  "rooms": rooms
 })
     # payload = jsonreq
         print(payload)
@@ -119,19 +105,22 @@ def model_clicked():
         print(st.session_state)
         if price["flag"]==True:
            
+           
 
             minspend=price["minspend"]
             maxspend=price["maxspend"]
     
-    
-    
+            if minspend==0 or maxspend==0:
+                 st.write(f'There is no specific price range for the selected category!!! ')
+                
+          
+            else:
+                st.write(f'This house values ranges from ')
+                st.metric(label="", value=f"${minspend}")
+ 
+                st.metric(label="and", value=f"${maxspend}")
 
-            st.write(f'This house values ranges from ')
-            st.metric(label="", value=f"${minspend}")
-    #st.write("and")
-            st.metric(label="and", value=f"${maxspend}")
-
-            st.markdown("---")
+                st.markdown("---")
         elif price["flag"]==False:
             print(st.session_state)
             uuid=price
