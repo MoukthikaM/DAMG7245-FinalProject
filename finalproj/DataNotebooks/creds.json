@@ -1,0 +1,8 @@
+{
+ "user": "adhrushta23",
+ "account": "lnb31265.us-east-1",
+ "role": "ACCOUNTADMIN",
+ "database": "HOUSING", "schema": "PUBLIC",
+ "password":"SaiRam!2#" ,
+ "warehouse": "XSMALL_WH"
+}
